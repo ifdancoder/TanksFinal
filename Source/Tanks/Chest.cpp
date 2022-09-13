@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Chest.h"
-#include "InventoryComponent.h"
+#include "InventoryComponentPlugin.h"
 #include <Components/PrimitiveComponent.h>
-#include "InventoryManagerComponent.h"
+#include "InventoryManagerComponentPlugin.h"
 #include "BasePawn.h"
 
 // Sets default values

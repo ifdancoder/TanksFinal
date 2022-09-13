@@ -76,7 +76,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret")
 	int MaxCannons = 2;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Friendliness")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Friendliness")
 	bool bIsFriendly = false;
 
 	UPROPERTY()
@@ -102,11 +102,17 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void Serialize(FArchive& Ar) override;
+
 	UFUNCTION(BlueprintCallable, Category = "Turret")
 	void SetupCannon(TSubclassOf<class ACannon> InCannonClass, int AmmoAmount);
 
 	UFUNCTION(BlueprintCallable, Category = "Turret")
 	void Fire();
+
+	int GetCurrentAmmo() const;
+
+	void SetCurrentAmmo(int InAmmo);
 
 	UFUNCTION(BlueprintCallable, Category = "Friendness")
 	bool GetFriendness();
@@ -114,6 +120,25 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Friendness")
 	void SetFriendness(bool InFriendness);
 
+	FTransform GetGunTransform() const
+	{
+		return TurretMesh->GetRelativeTransform();
+	}
+
+	FTransform GetBaseTransform() const
+	{
+		return BaseMesh->GetRelativeTransform();
+	}
+
+	void SetGunTransform(FTransform InTransform)
+	{
+		TurretMesh->SetRelativeTransform(InTransform);
+	}
+
+	void SetBaseTransform(FTransform InTransform)
+	{
+		BaseMesh->SetRelativeTransform(InTransform);
+	}
 
 	UFUNCTION(BlueprintPure, Category = "Turret")
 	class ACannon* GetCannon() const;

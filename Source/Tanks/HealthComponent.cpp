@@ -44,9 +44,22 @@ void UHealthComponent::TakeDamage(const FDamageData& DamageData)
 
 }
 
+void UHealthComponent::TakeHealInt(int InHeal)
+{
+	FDamageData Healing;
+	Healing.DamageValue = -InHeal;
+	TakeDamage(Healing);
+}
+
 float UHealthComponent::GetHealth() const
 {
 	return CurrentHealth;
+}
+
+
+void UHealthComponent::SetHealth(float InHealth)
+{
+	CurrentHealth = InHealth;
 }
 
 float UHealthComponent::GetHealthState() const

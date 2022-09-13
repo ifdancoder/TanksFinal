@@ -14,6 +14,10 @@
 #include "ActorPoolSubsystem.h"
 #include "HealthBar.h"
 #include "Pawns.h"
+#include "SimpleSavingActorSubsystem.h"
+#include <Engine/World.h>
+#include "InventoryComponentPlugin.h"
+#include "SimpleSavingActorSubsystem.h"
 
 // Sets default values
 ABasePawn::ABasePawn()
@@ -58,6 +62,11 @@ void ABasePawn::BeginPlay()
 	CurrentCannonIndex = 0;
 
 	Pawns::AddPawn(this);
+
+	if (GetWorld()->GetFirstPlayerController() != GetController())
+	{
+		GetWorld()->GetSubsystem<USimpleSavingActorSubsystem>()->SaveActor(GetName(), this);
+	}
 }
 
 void ABasePawn::EndPlay(EEndPlayReason::Type EndPlayReason)
@@ -77,6 +86,50 @@ void ABasePawn::Tick(float DeltaTime)
 			Cast<UHealthBar>(HealthBar->GetWidget())->SetAmmo(((GetCannon()->GetAmmoNow()) * 1.f) / MaxAmmo);
 		}
 		Cast<UHealthBar>(HealthBar->GetWidget())->SetHealth(HealthComponent->GetHealthState());
+	}
+}
+
+void ABasePawn::Serialize(FArchive& Ar)
+{
+	Super::Serialize(Ar);
+
+	if (Ar.IsSaveGame())
+	{
+		if (Ar.IsSaving())
+		{
+			float CurHealth = HealthComponent->GetHealth();
+			Ar << CurHealth;
+
+			int CurAmmo = Cannons[CurrentCannonIndex]->GetAmmoNow();
+			Ar << CurAmmo;
+
+			LocalInventory->Serialize(Ar);
+
+			FVector ActorLocation = GetActorLocation();
+			FTransform GunTransform = GetGunTransform();
+			FTransform BaseTransform = GetBaseTransform();
+			Ar << ActorLocation << GunTransform << BaseTransform;
+		}
+		else
+		{
+			float CurHealth;
+			Ar << CurHealth;
+			HealthComponent->SetHealth(CurHealth);
+
+			int CurAmmo;
+			Ar << CurAmmo;
+			Cannons[CurrentCannonIndex]->SetAmmoNow(CurAmmo);
+
+			LocalInventory->Serialize(Ar);
+
+			FVector ActorLocation;
+			FTransform GunTransform;
+			FTransform BaseTransform;
+			Ar << ActorLocation << GunTransform << BaseTransform;
+			SetActorLocation(ActorLocation);
+			SetGunTransform(GunTransform);
+			SetBaseTransform(BaseTransform);
+		}
 	}
 }
 
@@ -133,6 +186,16 @@ void ABasePawn::Fire()
 	if (!Cannons[CurrentCannonIndex]) return;
 
 	Cannons[CurrentCannonIndex]->Fire();
+}
+
+int ABasePawn::GetCurrentAmmo() const
+{
+	return Cannons[CurrentCannonIndex]->GetAmmoNow();
+}
+
+void ABasePawn::SetCurrentAmmo(int InAmmo)
+{
+	Cannons[CurrentCannonIndex]->SetAmmoNow(InAmmo);
 }
 
 bool ABasePawn::GetFriendness()
