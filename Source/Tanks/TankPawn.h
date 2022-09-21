@@ -8,6 +8,7 @@
 #include "HealthComponent.h"
 #include "BasePawn.h"
 #include "TanksHUD.h"
+#include "InteractionComponent.h"
 #include "TankPawn.generated.h"
 
 UCLASS()
@@ -20,6 +21,24 @@ public:
 	ATankPawn();
 
 protected:
+
+	UPROPERTY()
+	class UQuestList* QuestList;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UQuestList> QuestListClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "QuestSystem")
+	class UQuestListComponent* QuestListComp;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	UInteractionComponent* InteractionComponent;
+
+	UFUNCTION(BlueprintCallable)
+	void ToggleQuestListVisibility();
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UMediaPlayerCore> MediaWidgetClass;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	class USpringArmComponent* SpringArm;

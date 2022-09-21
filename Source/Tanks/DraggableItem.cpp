@@ -2,7 +2,7 @@
 
 
 #include "DraggableItem.h"
-#include "TankDragDropOperation.h"
+#include "DragDropOperationPlugin.h"
 #include <Blueprint/WidgetBlueprintLibrary.h>
 #include <Components/VerticalBox.h>
 #include <Components/VerticalBoxSlot.h>

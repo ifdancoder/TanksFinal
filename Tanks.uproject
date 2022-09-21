@@ -13,8 +13,16 @@
 				"AIModule",
 				"UMG",
 				"Slate",
-				"SlateCore"
+				"SlateCore",
+				"CoreUObject",
+				"QuestSystem"
 			]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "StandaloneWindowEditorTool",
+			"Enabled": false
 		}
 	]
 }

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "EquipInterface.h"
+#include "EquipInterfacePlugin.h"
 #include "InventoryCharacter.generated.h"
 
 class UInventoryComponent;
@@ -19,6 +19,11 @@ class TANKS_API AInventoryCharacter : public APawn, public IEquipInterface
 public:
 	// Sets default values for this character's properties
 	AInventoryCharacter();
+
+	UInventoryComponent* GetInventoryComponent()
+	{
+		return LocalInventory;
+	}
 
 protected:
 

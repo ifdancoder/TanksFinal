@@ -72,6 +72,11 @@ void ACannon::FireSpecial()
 	Shot();
 }
 
+void ACannon::SetAmmoNow(int InAmmo)
+{
+	AmmoNow = InAmmo;
+}
+
 int ACannon::GetAmmoNow()
 {
 	return AmmoNow;

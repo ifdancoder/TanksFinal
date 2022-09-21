@@ -34,7 +34,13 @@ public:
 	void TakeDamage(const FDamageData& DamageData);
 
 	UFUNCTION(BlueprintCallable, Category = "Health Component")
+	void TakeHealInt(int InHeal);
+
+	UFUNCTION(BlueprintCallable, Category = "Health Component")
 	float GetHealth() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Health Component")
+	void SetHealth(float InHealth);
 
 	UFUNCTION(BlueprintCallable, Category = "Health Component")
 	float GetHealthState() const;
@@ -43,7 +49,7 @@ public:
 	void AddHealth(float AddiditionalHealthValue);
 
 protected:
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	float CurrentHealth = 0.f;
 
 	virtual void BeginPlay() override;

@@ -78,6 +78,7 @@ public:
 
 	void Fire();
 	void FireSpecial();
+	void SetAmmoNow(int InAmmo);
 	int GetAmmoNow();
 	int GetMaxAmmo();
 	void Shot();

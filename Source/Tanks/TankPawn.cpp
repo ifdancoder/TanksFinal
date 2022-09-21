@@ -12,6 +12,11 @@
 #include "GameStructs.h"
 #include "Components/BoxComponent.h"
 #include "TanksHUD.h"
+#include "InventoryManagerComponentPlugin.h"
+#include "MediaPlayerCore.h"
+#include "QuestList.h"
+#include "QuestListComponent.h"
+#include <Blueprint/WidgetBlueprintLibrary.h>
 
 // Sets default values
 ATankPawn::ATankPawn()
@@ -25,6 +30,33 @@ ATankPawn::ATankPawn()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
+
+	InteractionComponent = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComponent"));
+	InteractionComponent->SetupAttachment(BaseMesh);
+	QuestListComp = CreateDefaultSubobject<UQuestListComponent>(TEXT("QuestListComponent"));
+}
+
+void ATankPawn::ToggleQuestListVisibility()
+{
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+
+	if (QuestList)
+	{
+		QuestList->RemoveFromParent();
+		QuestList = nullptr;
+		UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
+	}
+	else
+	{
+		if (QuestListClass)
+		{
+			QuestList = CreateWidget<UQuestList>(GetWorld(), QuestListClass);
+			QuestList->Init(QuestListComp);
+			QuestList->AddToViewport();
+			UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(PlayerController);
+		}
+	}
+	PlayerController->SetShowMouseCursor(true);
 }
 
 // Called when the game starts or when spawned
@@ -36,11 +68,17 @@ void ATankPawn::BeginPlay()
 
 	bIsPlayer = GetController() == GetWorld()->GetFirstPlayerController();
 
-	SetFriendness(bIsPlayer);
-
 	if (bIsPlayer)
 	{
 		TanksHud = Cast<ATanksHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+		
+		if (MediaWidgetClass)
+		{
+			UMediaPlayerCore* MediaCore = CreateWidget<UMediaPlayerCore>(GetWorld(), MediaWidgetClass);
+			MediaCore->AddToViewport();
+		}
+
+		SetFriendness(true);
 	}
 }
 
@@ -86,6 +124,15 @@ void ATankPawn::Tick(float DeltaTime)
 		UE_LOG(LogTanks, Verbose, TEXT("Cs%d: %s"), i, (*Cannons[0]).IsHidden() ? TEXT("true") : TEXT("false"));
 	}*/
 	//UE_LOG(LogTanks, Log, TEXT("Score: %f"), GetCurrentScore());
+
+	if (bIsPlayer)
+	{
+		if (InventoryManager->GetCurrentHeal())
+		{
+			HealthComponent->TakeHealInt(InventoryManager->GetCurrentHeal());
+		}
+		InventoryManager->SetCurrentHeal(0);
+	}
 }
 
 void ATankPawn::TakeDamage(const FDamageData& DamageData)

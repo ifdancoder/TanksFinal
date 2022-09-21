@@ -2,9 +2,9 @@
 
 
 #include "InventoryCharacter.h"
-#include "InventoryComponent.h"
-#include "EquipInventoryComponent.h"
-#include "InventoryManagerComponent.h"
+#include "InventoryComponentPlugin.h"
+#include "EquipInventoryComponentPlugin.h"
+#include "InventoryManagerComponentPlugin.h"
 #include "TankPawn.h"
 
 // Sets default values
