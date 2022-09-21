@@ -4,6 +4,9 @@
 #include "QuestListComponent.h"
 
 #include "CurrentObjectives.h"
+#include <Kismet/GameplayStatics.h>
+#include "Quest.h"
+#include "QuestList.h"
 
 
 // Sets default values for this component's properties
@@ -56,33 +59,3 @@ void UQuestListComponent::SetActiveQuest(AQuestActor* Quest)
 		OnActiveQuestChanged.Broadcast(Quest);
 	}
 }
-
-void UQuestListComponent::Serialize(FArchive& Ar)
-{
-	Super::Serialize(Ar);
-	if (Ar.IsSaveGame())
-	{
-		if (Ar.IsSaving())
-		{
-			int32 QuestsCount = AcceptedQuests.Num();
-			Ar << QuestsCount;
-			for (auto Quest : AcceptedQuests)
-			{
-				Quest->Serialize(Ar);
-			}
-		}
-		else
-		{
-			AcceptedQuests.Reset();
-			int32 QuestsCount;
-			Ar << QuestsCount;
-			for (int32 i = 0; i < QuestsCount; ++i)
-			{
-				AQuestActor* Quest = nullptr;
-				Quest->Serialize(Ar);
-				AcceptedQuests.Add(Quest);
-			}
-		}
-	}
-}
-

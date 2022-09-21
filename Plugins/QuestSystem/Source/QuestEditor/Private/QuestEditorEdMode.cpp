@@ -6,6 +6,7 @@
 #include "EditorModeManager.h"
 #include "Engine/Font.h"
 #include "Engine/Selection.h"
+#include "Quest.h"
 
 const FEditorModeID FQuestEditorModeEdMode::EM_QuestEditorModeEdModeId = TEXT("EM_QuestEditorModeEdMode");
 

@@ -25,7 +25,6 @@ void UQuestDialog::NativeConstruct()
 	if (PlayerController)
 	{
 		UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(PlayerController);
-		PlayerController->SetShowMouseCursor(true);
 	}
 }
 
@@ -43,6 +42,11 @@ void UQuestDialog::AcceptQuest()
 	HideDialog();
 }
 
+void UQuestDialog::QuickAcceptQuest()
+{
+	OnQuestAccepted.ExecuteIfBound();
+}
+
 void UQuestDialog::RejectQuest()
 {
 	HideDialog();
@@ -56,7 +60,6 @@ void UQuestDialog::HideDialog()
 	if (PlayerController)
 	{
 		UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
-		PlayerController->SetShowMouseCursor(false);
 	}
 
 	OnQuestQuited.ExecuteIfBound();

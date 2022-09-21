@@ -7,7 +7,7 @@
 #include "NPCEditorSubsystem.h"
 #include "QuestDialog.h"
 #include "QuestListComponent.h"
-//#include "SaveActorsSubsystem.h"
+#include "QuestSavingSubsystem.h"
 
 
 
@@ -57,6 +57,9 @@ void AQuestGiverActor::Serialize(FArchive& Ar)
 		}
 		else
 		{
+			bIsQuickAccept = true;
+			Interact_Implementation(GetWorld()->GetFirstPlayerController()->GetPawn());
+
 			int32 QuestsCount;
 			Ar << QuestsCount;
 			FString Key;
@@ -72,9 +75,10 @@ void AQuestGiverActor::Serialize(FArchive& Ar)
 				}
 			}
 			HasAvailableQuests();
-
 		}
 	}
+
+	bIsQuickAccept = false;
 }
 
 // Called when the game starts or when spawned
@@ -95,10 +99,10 @@ void AQuestGiverActor::BeginPlay()
 		}
 	}
 
-	/*if (auto Subsystem = GetWorld()->GetSubsystem<USaveActorsSubsystem>())
+	if (auto Subsystem = GetWorld()->GetSubsystem<UQuestSavingSubsystem>())
 	{
-		Subsystem->SaveActor(GetName(), this);
-	}*/
+		Subsystem->SaveQuestGiverActor(GetName(), this);
+	}
 
 	if (StaticMeshAvailableQuest)
 	{
@@ -199,7 +203,15 @@ void AQuestGiverActor::Interact_Implementation(AActor* InteractInstigator)
 								NotifyInteractionFinished(this, InteractInstigator);
 							}
 						);
-						QuestDialog->AddToViewport();
+
+						if (bIsQuickAccept)
+						{
+							QuestDialog->QuickAcceptQuest();
+						}
+						else
+						{
+							QuestDialog->AddToViewport();
+						}
 						return;
 					}
 

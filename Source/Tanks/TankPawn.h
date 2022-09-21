@@ -75,8 +75,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void Serialize(FArchive& Ar) override;
-
 	virtual void TakeDamage(const FDamageData& DamageData) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Movement")

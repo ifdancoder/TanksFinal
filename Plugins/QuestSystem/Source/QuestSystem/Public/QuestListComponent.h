@@ -34,17 +34,18 @@ public:
 	void SetActiveQuest(AQuestActor* Quest);
 
 	FOnActiveQuestChanged OnActiveQuestChanged;
-	virtual void Serialize(FArchive& Ar) override;
 
 protected:
+	
+	class UQuestList* OurQuestList;
 
 	UPROPERTY()
-		TArray<AQuestActor*> AcceptedQuests;
+	TArray<AQuestActor*> AcceptedQuests;
 
 	UPROPERTY()
-		AQuestActor* ActiveQuest;
+	AQuestActor* ActiveQuest;
 
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<UCurrentObjectives> CurrentObjectivesWidgetClass;
+	TSubclassOf<UCurrentObjectives> CurrentObjectivesWidgetClass;
 
 };

@@ -22,6 +22,9 @@ class QUESTSYSTEM_API UObjective : public UObject
 	GENERATED_BODY()
 
 public:
+
+	virtual void Serialize(FArchive& Ar) override;
+
 	virtual void ActivateObjective(AActor* Instigator) {};
 
 	UPROPERTY(EditAnywhere)

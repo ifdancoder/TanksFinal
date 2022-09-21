@@ -36,28 +36,6 @@ ATankPawn::ATankPawn()
 	QuestListComp = CreateDefaultSubobject<UQuestListComponent>(TEXT("QuestListComponent"));
 }
 
-void ATankPawn::Serialize(FArchive& Ar)
-{
-	Super::Serialize(Ar);
-
-	if (Ar.IsSaveGame())
-	{
-		if (Ar.IsSaving())
-		{
-			QuestListComp->Serialize(Ar);
-			//	FTransform ActorTransform = GetActorTransform();
-			//	Ar << ActorTransform;
-		}
-		else
-		{
-			QuestListComp->Serialize(Ar);
-			//	FTransform ActorTransform;
-			//	Ar << ActorTransform;
-			//	SetActorTransform(ActorTransform);
-		}
-	}
-}
-
 void ATankPawn::ToggleQuestListVisibility()
 {
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();

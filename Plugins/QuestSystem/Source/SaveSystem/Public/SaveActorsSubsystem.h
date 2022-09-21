@@ -15,7 +15,6 @@ class SAVESYSTEM_API USaveActorsSubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
 
-
 protected:
 	UPROPERTY()
 	TMap<FString, AActor*> SavedActors;

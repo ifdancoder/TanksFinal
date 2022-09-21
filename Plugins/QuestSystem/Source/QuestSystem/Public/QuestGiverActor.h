@@ -54,6 +54,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "QuestSystem")
 		float Speed = 0;
 
+	bool bIsQuickAccept = false;
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -61,10 +63,10 @@ public:
 	virtual void Interact_Implementation(AActor* InteractInstigator) override;
 
 	UFUNCTION()
-		void SetTickAndVisibility(bool HasAvailableQuest);
+	void SetTickAndVisibility(bool HasAvailableQuest);
 
 	UFUNCTION(BlueprintCallable)
-		void HasAvailableQuests();
+	void HasAvailableQuests();
 
 private:
 	float TimeCount;

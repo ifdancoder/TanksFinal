@@ -5,6 +5,7 @@
 
 #include "SaveActorsSubsystem.h"
 #include "Serialization/ObjectAndNameAsStringProxyArchive.h"
+#include "QuestSavingSubsystem.h"
 
 void USaveGameInfo::CollectData(UWorld* World)
 {
@@ -16,6 +17,10 @@ void USaveGameInfo::CollectData(UWorld* World)
 		Pawn->Serialize(Ar);
 	}
 	if (auto Subsystem = World->GetSubsystem<USaveActorsSubsystem>())
+	{
+		Subsystem->Serialize(Ar);
+	}
+	if (auto Subsystem = World->GetSubsystem<UQuestSavingSubsystem>())
 	{
 		Subsystem->Serialize(Ar);
 	}
@@ -32,6 +37,10 @@ void USaveGameInfo::ApplyData(UWorld* World)
 		Pawn->Serialize(Ar);
 	}
 	if (auto Subsystem = World->GetSubsystem<USaveActorsSubsystem>())
+	{
+		Subsystem->Serialize(Ar);
+	}
+	if (auto Subsystem = World->GetSubsystem<UQuestSavingSubsystem>())
 	{
 		Subsystem->Serialize(Ar);
 	}

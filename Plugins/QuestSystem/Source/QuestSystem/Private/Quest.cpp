@@ -37,8 +37,37 @@ void AQuestActor::Tick(float DeltaTime)
 void AQuestActor::Serialize(FArchive& Ar)
 {
 	Super::Serialize(Ar);
+
 	if (Ar.IsSaveGame())
 	{
+		if (Ar.IsSaving())
+		{
+			int32 ObjectivesCount = Objectives.Num();
+			Ar << ObjectivesCount;
+			for (auto Objective : Objectives)
+			{
+				FString Key = Objective->GetName();
+				Ar << Key;
+				Objective->Serialize(Ar);
+			}
+		}
+		else
+		{
+			int32 ObjectivesCount;
+			Ar << ObjectivesCount;
+			FString Key;
+			for (int32 i = 0; i < ObjectivesCount; ++i)
+			{
+				Ar << Key;
+				for (auto Objective : Objectives)
+				{
+					if (Key == Objective->GetName())
+					{
+						Objective->Serialize(Ar);
+					}
+				}
+			}
+		}
 		Ar << bIsTaken;
 		Ar << bIsCompleted;
 	}

@@ -35,10 +35,13 @@ public:
 		UButton* RejectButton;
 
 	UFUNCTION()
-		void AcceptQuest();
+	void AcceptQuest();
 
 	UFUNCTION()
-		void RejectQuest();
+	void QuickAcceptQuest();
+
+	UFUNCTION()
+	void RejectQuest();
 
 	void HideDialog();
 };

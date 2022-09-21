@@ -17,7 +17,7 @@
 #include "SimpleSavingActorSubsystem.h"
 #include <Engine/World.h>
 #include "InventoryComponentPlugin.h"
-#include "SimpleSavingActorSubsystem.h"
+#include "SaveActorsSubsystem.h"
 
 // Sets default values
 ABasePawn::ABasePawn()
@@ -65,7 +65,7 @@ void ABasePawn::BeginPlay()
 
 	if (GetWorld()->GetFirstPlayerController() != GetController())
 	{
-		GetWorld()->GetSubsystem<USimpleSavingActorSubsystem>()->SaveActor(GetName(), this);
+		GetWorld()->GetSubsystem<USaveActorsSubsystem>()->SaveActor(GetName(), this);
 	}
 }
 

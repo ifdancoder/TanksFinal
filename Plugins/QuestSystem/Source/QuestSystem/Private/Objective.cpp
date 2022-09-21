@@ -87,3 +87,14 @@ void UCollectionObjective::ActivateObjective(AActor* Instigator)
 		}
 	}
 }
+
+void UObjective::Serialize(FArchive& Ar)
+{
+	Super::Serialize(Ar);
+
+	if (Ar.IsSaveGame())
+	{
+		Ar << bCanBeCompleted;
+		Ar << bIsCompleted;
+	}
+}

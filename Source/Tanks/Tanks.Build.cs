@@ -21,6 +21,7 @@ public class Tanks : ModuleRules
 			"DesktopPlatform",
 			"MediaAssets",
 			"QuestSystem",
+			"SaveSystem"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

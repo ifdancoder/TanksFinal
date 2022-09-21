@@ -102,9 +102,12 @@ void FQuestEditorModeEdModeToolkit::Init(const TSharedPtr<IToolkitHost>& InitToo
 												}
 											}
 										}
+
+										GEditor->SelectActor(Quest, true, true);
 									}
 								}
 							}
+
 							for (auto QuestObjective : QuestObjectivesArray)
 							{
 								GEditor->SelectActor(QuestObjective, true, true);
